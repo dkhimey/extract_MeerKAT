@@ -3,6 +3,7 @@ include("globaltools.jl")
 using Blio
 using Printf
 using .GlobalTools
+using BenchmarkTools
 
 # check user input of filename 
 try global rawname, outname = ARGS[1], ARGS[2]
@@ -38,16 +39,20 @@ seekstart(raw)
 
 # start writing new file
 outfile = open(outname, "w")
-while read!(raw, header)
-    read!(raw, data)
-    # check if time falls on interval 
-    # !!!! something to worry about later: what happens if user flips inputs?
-    if header["lst"] <= t2 && header["lst"] >= t1
-        # write new header
-        # !!!! should probably also edit header
-        write(outfile, header)
-        # write data from spcified channels
-        write(outfile, data[:, :, f1:f2])
-    else
+
+# time this section
+@time begin
+    while read!(raw, header)
+        read!(raw, data)
+        # check if time falls on interval 
+        # !!!! something to worry about later: what happens if user flips inputs?
+        if header["lst"] <= t2 && header["lst"] >= t1
+            # write new header
+            # !!!! should probably also edit header
+            write(outfile, header)
+            # write data from spcified channels
+            write(outfile, data[:, :, f1:f2])
+        else
+        end
     end
 end
