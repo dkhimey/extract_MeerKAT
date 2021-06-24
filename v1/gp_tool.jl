@@ -48,7 +48,7 @@ outfile = open(outname, "w")
         # !!!! something to worry about later: what happens if user flips inputs?
         if header["lst"] <= t2 && header["lst"] >= t1
             # write new header
-            # !!!! should probably also edit header
+            # !!!! edit header
             write(outfile, header)
             # write data from spcified channels
             write(outfile, data[:, :, f1:f2])
